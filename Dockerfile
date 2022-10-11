@@ -5,5 +5,7 @@ RUN yum -y install httpd --nodocs && yum clean all -y &&  \
 RUN sed -i 's/Listen 80/Listen 8080/g' /etc/httpd/conf/httpd.conf
 EXPOSE 8080
 RUN rm -rf /run/httpd && mkdir /run/httpd
-USER root
+ENV APPDIR /run/httpd /var/log/httpd /var/run/httpd
+RUN chgrp -R 0 ${APPDIR}
+USER 1001
 CMD /usr/sbin/httpd -DFOREGROUND
